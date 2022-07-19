@@ -5,7 +5,7 @@ export default function App(){
   return <RootStack/>;
 };
 
-// // AppRegistry.registerComponent('main', () => App);
+// // AppRegistry.registerComponent('Root', () => App);
 
 // import { registerRootComponent } from 'expo';
 // import React from 'react';

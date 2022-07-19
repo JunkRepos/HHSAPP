@@ -9,7 +9,7 @@ export default function Music() {
     console.log('File has been saved to:', uri);
     await Print.printAsync({uri, printerUrl: selectedPrinter?.url});
   }
-  const uri = "https://firebasestorage.googleapis.com/v0/b/hhsapp-a7ce9.appspot.com/o/2022-05-04%2009-47.pdf?alt=media&token=bb866fa6-3023-4866-99e5-4e0a0a766b82"
+  const uri = "https://firebasestorage.googleapis.com/v0/b/hhsapp-a7ce9.appspot.com/o/JPG%2F2022-05-04%2017-26.jpg?alt=media&token=cba3ac45-3d5a-4056-8a65-8f7dc2fa00c4"
   return (
     <SafeAreaView style={{flex: 1, alignContent: 'center'}}>
       {/* <Text style={{fontSize: 40, alignSelf: 'center', fontFamily: "Avenir Next"}}>Music</Text> */}

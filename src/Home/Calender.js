@@ -4,8 +4,10 @@ import { userAuth } from '../Components/userDataContext'
 import CalenderCard from '../Components/CalenderComp/CalenderCard';
 import CreateCalenderCard from '../Components/CalenderComp/CreateCalenderCard';
 import { View, Platform, Text} from 'react-native';
+import { Popup } from '../Components/Popup';
 export const Calender = ({navigation}) => {
-  const {userData, setUserData, logOut, user, items, setItems} = userAuth();
+  const {user, setUser, items, setItems} = userAuth();
+  // console.log(user);
   const loadItems = (day) => {
     setTimeout(() => {
       const newItems = {};
@@ -23,10 +25,12 @@ export const Calender = ({navigation}) => {
       return (
         <CalenderCard item={item} navigation={navigation} img={require("../../assets/HomesteadBandLogo.png")}/>
    )
-    
   }
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
+    <Popup visible={(user == null ? true : false)} setUser={setUser}/>
+
+    
     <Agenda
     items={items}
     loadItemsForMonth={loadItems}

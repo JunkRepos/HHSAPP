@@ -5,17 +5,19 @@ import { Ionicons } from '@expo/vector-icons';
 import { EditUsername } from '../Components/EditAccount/EditUsername';
 export const Account = () => {
     
-    const {userData, setUserData, logOut, user} = userAuth();
+    const {user, setUser, items, setItems} = userAuth();
     // console.log(user);
     // console.log(user.username);
     // console.log(userData);
     // console.log(user);
+    // console.log(user);
+    // console.log(user[0].position)
     const username = user.username;
     const id = user.id;
     const [changeUsernameVisible, setChangeUsernameVisible] = useState(false);
     return (
         <View>
-            <EditUsername username={username} id={id} visible={changeUsernameVisible} setVisible={setChangeUsernameVisible}/>
+            {/* <EditUsername username={username} id={id} visible={changeUsernameVisible} setVisible={setChangeUsernameVisible}/> */}
             <Text style={{
                 fontSize: 20,
                 justifyContent: 'center',
@@ -24,7 +26,7 @@ export const Account = () => {
                 fontWeight: "500",
                 paddingHorizontal: "7%",
                 color: "#525252"}}>Account Information</Text>
-            <View style={{marginTop: "1%", width: "100%", backgroundColor: "white", borderTopColor: 'grey', borderTopWidth: 0.2, marginBottom: 0.4}}>
+            {/* <View style={{marginTop: "1%", width: "100%", backgroundColor: "white", borderTopColor: 'grey', borderTopWidth: 0.2, marginBottom: 0.4}}>
             <View style={{flexDirection: 'row', marginLeft: "7%", borderBottomWidth: 0.2, borderBottomColor: 'grey', paddingVertical: "2%"}}>
             <Text style={{
                 fontSize: 18,
@@ -36,8 +38,8 @@ export const Account = () => {
             <Ionicons size={20} style={{fontFamily: "Avenir Next"}} name='md-chevron-forward'/>
             </TouchableOpacity>
             </View>
-            </View>
-            <View style={{width: "100%", backgroundColor: "white", marginBottom: 0.2}}>
+            </View> */}
+            {/* <View style={{width: "100%", backgroundColor: "white", marginBottom: 0.2}}>
             <View style={{flexDirection: 'row', marginLeft: "7%", borderBottomWidth: 0.2, borderBottomColor: 'grey', paddingVertical: "2%"}}>
             <Text style={{
                 fontSize: 18,
@@ -49,7 +51,7 @@ export const Account = () => {
             <Ionicons size={20} style={{fontFamily: "Avenir Next"}} name='md-chevron-forward'/>
             </TouchableOpacity>
             </View>
-            </View>
+            </View> */}
             <View style={{width: "100%", backgroundColor: "white", marginBottom: 0.2}}>
             <View style={{flexDirection: 'row', marginLeft: "7%", borderBottomWidth: 0.2, borderBottomColor: 'grey', paddingVertical: "2%"}}>
             <Text style={{
@@ -89,7 +91,7 @@ export const Account = () => {
             </TouchableOpacity>
             </View>
             </View>
-            <View style={{width: "100%", backgroundColor: "white", marginBottom: 0.2}}>
+            {/* <View style={{width: "100%", backgroundColor: "white", marginBottom: 0.2}}>
             <View style={{flexDirection: 'row', borderBottomWidth: 0.2, borderBottomColor: 'grey', paddingVertical: "2%"}}>
             <Text style={{
                 fontSize: 18,
@@ -100,7 +102,7 @@ export const Account = () => {
             <Ionicons size={20} style={{fontFamily: "Avenir Next"}} name='md-chevron-forward'/>
             </TouchableOpacity>
             </View>
-            </View>
+            </View> */}
             <Text style={{
                 fontSize: 20,
                 justifyContent: 'center',
@@ -109,9 +111,9 @@ export const Account = () => {
                 fontWeight: "500",
                 paddingHorizontal: "7%",
                 color: "#525252"}}>Notifications</Text>
-            <TouchableOpacity onPress={()=>{logOut()}}>
+            {/* <TouchableOpacity onPress={()=>{logOut()}}>
                 <Text>Log Out</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             
         </View>
     );
