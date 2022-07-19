@@ -4,13 +4,13 @@ import { Modal } from 'react-native'
 import { View, Text, TouchableOpacity, TextInput, Alert} from 'react-native'
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../Firebase/firebase-config';
-export const EditUsername = ({username, id, visible, setVisible}) => {
-    const [newUsername, setNewUsername] = useState("");
-    const updateUsername = async () => { 
+export const EditUsername = ({email, id, visible, setVisible}) => {
+    const [newEmail, setNewEmail] = useState("");
+    const updateEmail = async () => { 
         const docRef = doc(db, "users", id);
         await updateDoc(docRef, {
-            username: newUsername
-        }).then(()=>{Alert.alert("username will update when app is restarted")})
+            email: newEmail
+        }).then(()=>{Alert.alert("email will update when app is restarted")})
     }
     
   return (
@@ -28,16 +28,16 @@ export const EditUsername = ({username, id, visible, setVisible}) => {
                         <Text style={{fontWeight: "500", fontFamily: "Avenir Next", fontSize: 15}}>Account</Text>
                     </TouchableOpacity>
                     <Text style={{paddingRight: "20%", fontWeight: "500", fontFamily: "Avenir Next", fontSize: 18, paddingVertical: "2.5%",width: "100%", textAlign: 'center'}}>Edit Username</Text>
-                    { (newUsername != username && newUsername!="") ?
-                    <TouchableOpacity  onPress={()=>{updateUsername(), setVisible(false)}} style={{flexDirection: 'row', position: 'absolute', right: "5%"}}>
+                    { (newEmail != email && newEmail!="") ?
+                    <TouchableOpacity  onPress={()=>{updateEmail(), setVisible(false)}} style={{flexDirection: 'row', position: 'absolute', right: "5%"}}>
                         <Text style={{fontWeight: "500", fontFamily: "Avenir Next", fontSize: 15}}>Save</Text>
                     </TouchableOpacity> :
                     <View></View>
                     }
 
                     </View>
-                    <Text style={{fontWeight: "600", fontFamily: "Avenir Next", fontSize: 16, paddingLeft: "5%", paddingVertical: '2%'}}>Username</Text>
-                    <TextInput onChangeText={(text)=>{setNewUsername(text)}} defaultValue={username} style={{marginHorizontal: "7%", backgroundColor: 'rgba(10,10,10,0.1)', paddingVertical: "4%", borderRadius: 5, paddingHorizontal: "2%"}}/>
+                    <Text style={{fontWeight: "600", fontFamily: "Avenir Next", fontSize: 16, paddingLeft: "5%", paddingVertical: '2%'}}>Email</Text>
+                    <TextInput onChangeText={(text)=>{setNewEmail(text)}} defaultValue={email} style={{marginHorizontal: "7%", backgroundColor: 'rgba(10,10,10,0.1)', paddingVertical: "4%", borderRadius: 5, paddingHorizontal: "2%"}}/>
 
                     </View>
                 </View>

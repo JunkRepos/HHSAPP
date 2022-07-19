@@ -1,9 +1,16 @@
 import Dialog, { SlideAnimation, DialogContent } from 'react-native-popup-dialog';
-import {View, TouchableOpacity, Text} from 'react-native';
-import { useState } from 'react';
+import {View, TouchableOpacity, Text, Alert} from 'react-native';
+import { useState, useEffect } from 'react';
 import { Dropdown } from 'react-native-element-dropdown';
 export const Popup = ({visible, setVisible, onPress, selectedSection, setSelectedSection, selectedInstrument, setSelectedInstrument, selectedPosition, setSelectedPosition}) => {
-
+  const [submitColor, setSubmitColor] = useState('rgba(255,255,255,0.5)');
+  useEffect(()=>{
+      if (selectedInstrument!="" && selectedPosition!="" && selectedSection!=""){
+          setSubmitColor('white');
+      } else {
+          setSubmitColor('rgba(255,255,255,0.5)');
+      }
+  }, [selectedInstrument, selectedPosition, selectedSection])
     const section = [
         { value: 'WoodWind', label: 'WoodWind' },
         { value: 'Brass', label: 'Brass' },
@@ -86,9 +93,22 @@ export const Popup = ({visible, setVisible, onPress, selectedSection, setSelecte
     }}/>
     </View>
     </View>
-    <TouchableOpacity onPress={()=>{onPress(), setVisible(false)}} style={{borderRadius: 10, backgroundColor: "green", paddingHorizontal: "5%", paddingVertical: "2%"}}>
-        <Text style={{fontSize: 20, color: 'white'}}>Submit</Text>
+    {/* <TouchableOpacity>
+      <Text>
+        CANCEL
+      </Text>
     </TouchableOpacity>
+    <TouchableOpacity onPress={()=>{(selectedInstrument!="" && selectedPosition!="" && selectedSection!="") ? (onPress(), setVisible(false), setSelectedPosition(""), setSelectedInstrument(""), setSelectedSection("")): Alert.alert("please select all boxes")}} style={{borderRadius: 10, backgroundColor: "green", paddingHorizontal: "5%", paddingVertical: "2%"}}>
+        <Text style={{fontSize: 20, color: 'white'}}>SUBMIT</Text>
+    </TouchableOpacity> */}
+    <View style={{flexDirection: 'row'}}>
+    <TouchableOpacity onPress={()=>{setVisible(false)}} style={{marginRight: "5%", paddingHorizontal: "10%", paddingVertical: "3.5%", borderWidth: 0.5, borderColor: 'grey', borderRadius: 5}}>
+            <Text style={{fontWeight: "600", fontFamily: "Avenir Next", fontSize: 16}}>CANCEL</Text>
+        </TouchableOpacity>
+        <TouchableOpacity  onPress={()=>{(selectedInstrument!="" && selectedPosition!="" && selectedSection!="") ? (onPress(), setVisible(false)): Alert.alert("please select all boxes")}} style={{backgroundColor: '#0096FF', marginLeft: "5%", paddingHorizontal: "11%", paddingVertical: "3.5%", borderRadius: 5, shadowRadius: 1, shadowColor: 'grey', shadowOpacity: 1, shadowOffset: [1,1]}}>
+            <Text style={{fontWeight: "600", fontFamily: "Avenir Next", fontSize: 16, color: submitColor}}>SUBMIT</Text>
+        </TouchableOpacity>
+        </View>
     </DialogContent>
   </Dialog>
 </View>)}

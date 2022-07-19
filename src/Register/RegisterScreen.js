@@ -8,7 +8,9 @@ import { auth, db} from '../Firebase/firebase-config';
 import {createUserWithEmailAndPassword} from 'firebase/auth';
 import {collection, addDoc} from 'firebase/firestore'
 import { userAuth} from '../Components/userDataContext';
+import SendVerificationEmail from '../Components/SendVerificationEmail';
 import { Popup } from '../Components/Popup';
+import { signInWithEmail } from '../Components/loginMethods';
 export default function Register({navigation}) {
   const userCollectionRef = collection(db, "users");
   const {height, width} = useWindowDimensions()
@@ -16,23 +18,31 @@ export default function Register({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
-  const {userData, setUserData, logOut, user} = userAuth();
+  const {userData, setUserData, logOut, user, items, setItems, getData} = userAuth();
   const [userNameValid, setUserNameValid] = useState(true);
+  const [emailValid, setEmailValid] = useState(true);
   const [passwordIsLong, setPasswordIsLong] = useState(true);
   const [sectionPopup, setSectionPopup] = useState(false);
   const [selectedSection, setSelectedSection] = useState("");
   const [selectedInstrument, setSelectedInstrument] = useState("");
   const [selectedPosition, setSelectedPosition] = useState("");
+  const [visibleOPT, setVisibleOTP] = useState(false);
+  const toHome = () => navigation.navigate('Home', { name: 'Home' });
+  // const toLoad = () => navigation.navigate("Loading", {name: 'Loading'})
   const checkValidUserName = (func) => {
     for (let i = 0; i < userData.length; i++){
       if (userData[i].username == username){
         Alert.alert("username is taken");
         setUserNameValid(false);
+        break
+      } else {
+        setUserNameValid(true);
       }
     }
     if (userNameValid){ func() };
   }
   const storeUserData = async () => {
+    console.log(username, email, password, selectedSection, selectedInstrument,selectedPosition);
     await addDoc(userCollectionRef, {
       username: username, 
       email: email, 
@@ -40,6 +50,7 @@ export default function Register({navigation}) {
       section: selectedSection.value,
       instrument: selectedInstrument.value,
       position: selectedPosition.value,}).catch((error)=>{console.log(error)});
+      console.log("STORED")
   }
   const checkPassword = async (word) => {
     if (word.length < 6 && word.length !== 0){
@@ -49,9 +60,17 @@ export default function Register({navigation}) {
     }
   }
   const createUser = () => {
+    console.log("CREAˇING")
     createUserWithEmailAndPassword(auth, email, password)
-    .then(()=>{toLogin(), storeUserData(), setEmail(""), setPassword(""), setUsername("")})
+    .then(()=>{storeUserData().then(()=>{
+      getData().then(()=>{
+        signInWithEmail(email, setEmail, password, setPassword, toHome, userData, selectedSection.value, selectedInstrument.value, selectedPosition.value, username)}
+      );
+    })})
     .catch((result)=>{Alert.alert(result.message)});
+    
+    // toLoad();
+    
   }
   const registerUser = async () => {
     checkValidUserName(createUser);
@@ -59,10 +78,11 @@ export default function Register({navigation}) {
   return (
     
       <View style={styles.container}>
+      <SendVerificationEmail createAccount={createUser} otp={(Math.floor((Math.random()*(900000)+100000))).toString()} emailTo={'advait.suraj.vedant@gmail.com'} visible={visibleOPT} setVisible={setVisibleOTP}/>
       <Popup 
         visible={sectionPopup} 
         setVisible={setSectionPopup}
-        onPress={registerUser} 
+        onPress={()=>{setVisibleOTP(true)}} //registerUser 
         selectedSection={selectedSection}
         setSelectedSection={setSelectedSection}
         selectedInstrument={selectedInstrument}
@@ -84,7 +104,6 @@ export default function Register({navigation}) {
           height: width*0.8, 
           transform: [{ rotate: '180deg' }]}} 
           source={require('../../assets/greenwave.png')} />
-    {/* { !keyboardStatus ? */}
     <KeyBoardAvoidingView>
     <View>
     <View style={styles.smallhalfcircle}>
@@ -116,7 +135,7 @@ export default function Register({navigation}) {
             top: '50%', 
             marginTop: -width*0.075, 
             right: "-10%"}}>
-        <TouchableOpacity onPress={()=>{setSectionPopup(true)}}>
+        <TouchableOpacity onPress={()=>{(email!="" && password!="" && username!="") ? setSectionPopup(true) : setSectionPopup(false)}}>
         <Image style={{
           width: width*0.15, 
           height: width*0.15}} source={require('../../assets/check.png')}/>

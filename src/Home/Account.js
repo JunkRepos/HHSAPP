@@ -1,14 +1,22 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { View, TouchableOpacity, Text, Platform} from 'react-native'
 import { userAuth } from '../Components/userDataContext';
 import { Ionicons } from '@expo/vector-icons';
 import { EditUsername } from '../Components/EditAccount/EditUsername';
 export const Account = () => {
+    
     const {userData, setUserData, logOut, user} = userAuth();
+    // console.log(user);
+    // console.log(user.username);
+    // console.log(userData);
+    // console.log(user);
+    const username = user.username;
+    const id = user.id;
+    const [changeUsernameVisible, setChangeUsernameVisible] = useState(false);
     return (
         <View>
-            <EditUsername />
-            {/* <Text style={{
+            <EditUsername username={username} id={id} visible={changeUsernameVisible} setVisible={setChangeUsernameVisible}/>
+            <Text style={{
                 fontSize: 20,
                 justifyContent: 'center',
                 paddingTop: "5%",
@@ -24,7 +32,7 @@ export const Account = () => {
                 fontFamily: "Avenir Next",
                 fontWeight: "500",}}>Username</Text>
             <Text style={{fontFamily: "Avenir Next",fontSize: 18, position: 'absolute', alignSelf: 'center', right: "10%"}}>{user.username}</Text>
-            <TouchableOpacity style={{position: 'absolute', alignSelf: 'center', right: "3%"}}>
+            <TouchableOpacity onPress={()=>{setChangeUsernameVisible(true)}} style={{position: 'absolute', alignSelf: 'center', right: "3%"}}>
             <Ionicons size={20} style={{fontFamily: "Avenir Next"}} name='md-chevron-forward'/>
             </TouchableOpacity>
             </View>
@@ -103,7 +111,7 @@ export const Account = () => {
                 color: "#525252"}}>Notifications</Text>
             <TouchableOpacity onPress={()=>{logOut()}}>
                 <Text>Log Out</Text>
-            </TouchableOpacity> */}
+            </TouchableOpacity>
             
         </View>
     );

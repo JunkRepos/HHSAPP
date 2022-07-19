@@ -78,7 +78,7 @@ export default function Login({navigation}) {
           marginTop: -width*0.075, 
           right: "-10%"}}>
         <TouchableOpacity
-        onPress={ () => {emailOrUsername ? signInWithEmail(email, setEmail, password, setPassword, toHome, userData) : signInWithUserName(username, setUsername, password, setPassword, userData, toHome)}}>
+        onPress={ () => {emailOrUsername ? signInWithEmail(email, setEmail, password, setPassword, toHome, userData, user.section, user.instrument, user.position) : signInWithUserName(username, setUsername, password, setPassword, userData, toHome)}}>
         <Image style={{
           width: width*0.15, 
           height: width*0.15}} 
@@ -95,10 +95,9 @@ export default function Login({navigation}) {
         alignSelf: 'flex-end'
         }}>Forgot?</Text>
       </View>
-
-      
       </KeyBoardAvoidingView>
       <View style={styles.smallhalfcircle}>
+      
       <CustomButton onPress={toRegister} text={'Register'} textColor={'#28c76f'} fontSize={25} font={'Arial Rounded MT Bold'} pad={15}/>
       </View>
 

@@ -18,14 +18,21 @@ export const UserContextProvider = ({children}) => {
     const eventCollectionRef = collection(db, "events");
     const logOut = async () => {
       let old_user = JSON.parse(await AsyncStorage.getItem('user'));
+      
       let info = {  
         username: old_user.username,  
         email: old_user.email,  
         password: old_user.password,
+        section: old_user.section,
+        instrument: old_user.instrument,
+        position: old_user.position,
         loggedin: false,
       }  
+      await AsyncStorage.removeItem('user');
       await AsyncStorage.setItem('user',JSON.stringify(info));
-      signOut(auth)
+      signOut(auth).then(()=>{
+        RootNavigation.navigate('Login', {name: 'Login'})
+      });
     }
     const checkLoggedIn = async () => {
       var parse = await AsyncStorage.getItem('user');
@@ -39,10 +46,11 @@ export const UserContextProvider = ({children}) => {
     }
     const getData = async () => {
       try {
+        console.log("GETTING DATA")
         const data = await getDocs(userCollectionRef);
         setUserData(data.docs.map((doc) =>({...doc.data(), id: doc.id})));
       } catch (error){
-        console.log(error, "DEEE");
+        console.log(error, "fAILED DATA");
         setUserData(null);
       }
     }
@@ -53,8 +61,8 @@ export const UserContextProvider = ({children}) => {
         const newItems = {};
         listOfItems.forEach(item => {
           if (item.guests == "Marching Band" || item.guests == user.section || item.guests == user.instrument || item.guests == user.position) {
-            console.log(user.section, user.instrument, user.position);
-            console.log(item.guests);
+            // console.log(user.section, user.instrument, user.position);
+            // console.log(item.guests);
             if (!newItems[item.index]){
               newItems[item.index] = [];
             }
@@ -75,9 +83,26 @@ export const UserContextProvider = ({children}) => {
       }
 
 }
+useEffect(()=>{
+  getData()
+  getItems();
+  checkLoggedIn();
+}, [])
+  const getUserData = async () => {
+    console.log("GETTINGUSER")
+    const userData = JSON.parse(await AsyncStorage.getItem('user'));
+    console.log(userData);
+    console.log(userData.email);
+    console.log(user.email);
+    if ((userData.email).toLowerCase() == (user.email).toLowerCase()){
+      setUser(userData);
+      console.log(userData, "USERDAˇA");
+    }
+  };
+  
+
 useEffect(() => {
   const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-    console.log(currentUser)
     if (currentUser == null){
       setUser([{
         username: "",
@@ -87,32 +112,20 @@ useEffect(() => {
         position: "",
         instrument: "",
       }])
+      RootNavigation.navigate('Login', {name: 'Login'})
     } else{
       setUser(currentUser);
+      RootNavigation.navigate('Home', {name: 'Home'})
     }
-
-    checkLoggedIn();
+    getUserData();
   });
   return () => {
     unsubscribe();
+    
   };
 }, []);
-useEffect(() => {
-  getData()
-  getItems();
-  }, []);
-useEffect(()=>{
-  try {
-  userData.forEach((users)=>{
-    console.log(users.email, user.email);
-    if ((users.email).toLowerCase() == (user.email).toLowerCase()) {
-      setUser(users);
-    }
-  })} catch(error){
-  }
-}, [userData, user]);
     return (
-        <userContext.Provider value={{userData, setUserData, logOut, user, items, setItems}}>
+        <userContext.Provider value={{userData, setUserData, logOut, user, items, setItems, getData}}>
             {children}
         </userContext.Provider>
     )
