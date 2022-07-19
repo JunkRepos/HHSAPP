@@ -69,11 +69,3 @@ function FolderCard({folderName, subFiles, print}) {
 };
 
 export default FolderCard;
-
-// const styles = StyleSheet.create({
-//     filename: {
-//         fontSize: 12,
-//         fontWeight: "bold",
-//         paddingHorizontal: 30,
-//     }
-// })

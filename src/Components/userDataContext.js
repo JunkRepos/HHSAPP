@@ -10,23 +10,28 @@ export const UserContextProvider = ({children}) => {
     const [user, setUser] = useState(null);
     const [items, setItems] = useState(null);
     const [musicFiles, setMusicFiles] = useState(null);
+    const [gettingData, setGettingData] = useState(false);
     const eventCollectionRef = collection(db, "events");
     const musicCollectionRef = collection(db, "Music");
     const checkLoggedIn = async () => {
+      setGettingData(true);
       var parse = await AsyncStorage.getItem('user');
       var user = JSON.parse(parse);
       setUser(user);
+      setGettingData(false);
     }
     useEffect(()=>{
-      if (user==null){
+      if (user==null && gettingData == false){
         checkLoggedIn();
-      } else{
+      } else if (gettingData == false) {
         changeLogIn().then(()=>{checkLoggedIn()});
       }
     }, [user])
     const changeLogIn = async () => {
+      setGettingData(true);
       const userInfo = JSON.stringify(user)
       await AsyncStorage.setItem('user', userInfo);
+      setGettingData(false);
     }
     const getMusic = async () => {
       try {
@@ -83,7 +88,7 @@ useEffect(()=>{
   RootNavigation.navigate('Home', {name: 'Home'});
 }, [])
     return (
-        <userContext.Provider value={{user, setUser, items, setItems, changeLogIn, musicFiles, setMusicFiles}}>
+        <userContext.Provider value={{user, setUser, items, setItems, changeLogIn, musicFiles, setMusicFiles, gettingData}}>
             {children}
         </userContext.Provider>
     )
