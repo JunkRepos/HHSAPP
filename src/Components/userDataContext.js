@@ -9,56 +9,49 @@ const userContext = createContext({});
 export const UserContextProvider = ({children}) => {
     const [user, setUser] = useState(null);
     const [items, setItems] = useState(null);
+    const [musicFiles, setMusicFiles] = useState(null);
     const eventCollectionRef = collection(db, "events");
-    // const logOut = async () => {
-    //   let old_user = JSON.parse(await AsyncStorage.getItem('user'));
-      
-    //   let info = {  
-    //     username: old_user.username,  
-    //     email: old_user.email,  
-    //     password: old_user.password,
-    //     section: old_user.section,
-    //     instrument: old_user.instrument,
-    //     position: old_user.position,
-    //     loggedin: false,
-    //   }  
-    //   await AsyncStorage.removeItem('user');
-    //   await AsyncStorage.setItem('user',JSON.stringify(info));
-    //   signOut(auth).then(()=>{
-    //     RootNavigation.navigate('Login', {name: 'Login'})
-    //   });
-    // }
+    const musicCollectionRef = collection(db, "Music");
     const checkLoggedIn = async () => {
-      // await AsyncStorage.removeItem('user');
       var parse = await AsyncStorage.getItem('user');
-      // console.log(parse);
       var user = JSON.parse(parse);
-      // console.log(user, "THS");
       setUser(user);
     }
-    // const getData = async () => {
-    //   try {
-    //     console.log("GETTING DATA")
-    //     const data = await getDocs(userCollectionRef);
-    //     setUserData(data.docs.map((doc) =>({...doc.data(), id: doc.id})));
-    //   } catch (error){
-    //     console.log(error, "fAILED DATA");
-    //     setUserData(null);
-    //   }
-    // }
     useEffect(()=>{
       if (user==null){
         checkLoggedIn();
       } else{
         changeLogIn().then(()=>{checkLoggedIn()});
       }
-      
     }, [user])
     const changeLogIn = async () => {
-      // await AsyncStorage.removeItem('user');
       const userInfo = JSON.stringify(user)
-      // console.log(userInfo);
       await AsyncStorage.setItem('user', userInfo);
+    }
+    const getMusic = async () => {
+      try {
+        console.log("DSDS");
+        const music = await getDocs(musicCollectionRef);
+        const listOfMusic = music.docs.map((doc) =>({...doc.data(), id: doc.id}));
+        const newMusic = {};
+        // console.log(listOfMusic);
+        listOfMusic.forEach(item => {
+          if (!newMusic[item.id]){
+            newMusic[item.id] = [];
+          }
+          console.log(item);
+          newMusic[item.id].push({
+            Songs: item.Songs,
+            id: item.id,
+          
+          })
+        setMusicFiles(newMusic);
+        })}catch(error){
+          console.log(error);
+          setMusicFiles(null);
+        }
+      
+
     }
     const getItems = async () =>{
       try {
@@ -67,8 +60,6 @@ export const UserContextProvider = ({children}) => {
         const newItems = {};
         listOfItems.forEach(item => {
           if (item.guests == "Marching Band" || item.guests == user.section || item.guests == user.instrument || item.guests == user.position) {
-            // console.log(user.section, user.instrument, user.position);
-            // console.log(item.guests);
             if (!newItems[item.index]){
               newItems[item.index] = [];
             }
@@ -80,66 +71,23 @@ export const UserContextProvider = ({children}) => {
               date: item.date,
               info: item.info});
           }
-          
       });
-      
       setItems(newItems);
       } catch (error){
         setItems(null);
       }
-
 }
-
 useEffect(()=>{
-  // getData()
   getItems();
+  getMusic();
   RootNavigation.navigate('Home', {name: 'Home'});
-  // checkLoggedIn();
-
 }, [])
-  // const getUserData = async () => {
-  //   console.log("GETTINGUSER")
-  //   const userData = JSON.parse(await AsyncStorage.getItem('user'));
-  //   console.log(userData);
-  //   console.log(userData.email);
-  //   console.log(user.email);
-  //   if ((userData.email).toLowerCase() == (user.email).toLowerCase()){
-  //     setUser(userData);
-  //     console.log(userData, "USERDAˇA");
-  //   }
-  // };
-  
-
-// useEffect(() => {
-//   const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-//     if (currentUser == null){
-//       setUser([{
-//         username: "",
-//         password: "",
-//         email: "",
-//         section: "",
-//         position: "",
-//         instrument: "",
-//       }])
-//       RootNavigation.navigate('Login', {name: 'Login'})
-//     } else{
-//       setUser(currentUser);
-//       RootNavigation.navigate('Home', {name: 'Home'})
-//     }
-//     getUserData();
-//   });
-//   return () => {
-//     unsubscribe();
-    
-//   };
-// }, []);
     return (
-        <userContext.Provider value={{user, setUser, items, setItems, changeLogIn}}>
+        <userContext.Provider value={{user, setUser, items, setItems, changeLogIn, musicFiles, setMusicFiles}}>
             {children}
         </userContext.Provider>
     )
 }
-
 export const userAuth = () => {
     return useContext(userContext);
 }

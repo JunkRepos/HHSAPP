@@ -2,11 +2,11 @@ import React, {useState} from 'react';
 import {View, TouchableOpacity, Text, ScrollView, Image, useWindowDimensions} from 'react-native';
 import {Card, Avatar} from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
-// import Pdf from 'react-native-pdf';
 function FolderCard({folderName, subFiles, print}) {
   const [showContent, setShowContent] = useState(false);
   const {height, width} = useWindowDimensions();
   const [openFile, setOpenFile] = useState(null);
+  console.log(subFiles, "FILES");
   return (
     <View style={{marginHorizontal: (openFile == null) ?  10 : 0, marginTop: (openFile == null) ? 17: 0, backgroundColor: (openFile != null) ? 'white' : 'transparent'}}>
     <ScrollView>
@@ -39,10 +39,10 @@ function FolderCard({folderName, subFiles, print}) {
     </Card>
     </TouchableOpacity>
           {
-              showContent ? (Object.keys(subFiles).map(file=>(
+              showContent ? (subFiles[0].Songs.map(({jpg, name, pdf})=>(
                 <Card style={{marginVertical: 5}}>
                 <Card.Content>
-                  <TouchableOpacity onPress={()=>{setOpenFile(subFiles[file])}}>
+                  <TouchableOpacity onPress={()=>{setOpenFile(jpg)}}>
                     
                   <View
                     style={{
@@ -51,8 +51,8 @@ function FolderCard({folderName, subFiles, print}) {
                       alignItems: 'center',
                       paddingHorizontal: 30,
                     }}>
-                    <Text>{file}</Text>
-                    <TouchableOpacity onPress={()=>{print(subFiles[file])}}>
+                    <Text>{name}</Text>
+                    <TouchableOpacity onPress={()=>{print(pdf)}}>
                     <Ionicons name={'print-outline'} size={20} color={'#C0C0C0'}/>
                     </TouchableOpacity>
                   </View>
