@@ -4,6 +4,7 @@ import {db } from '../Firebase/firebase-config'
 import * as RootNavigation from './NavRef';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Popup } from "./Popup";
+import { Alert } from "react-native";
 const userContext = createContext({});
 
 export const UserContextProvider = ({children}) => {
@@ -52,7 +53,7 @@ export const UserContextProvider = ({children}) => {
           })
         setMusicFiles(newMusic);
         })}catch(error){
-          console.log(error);
+          Alert.alert("please check your internet connection");
           setMusicFiles(null);
         }
       
@@ -82,10 +83,10 @@ export const UserContextProvider = ({children}) => {
         setItems(null);
       }
 }
-useEffect(()=>{
-  getItems();
-  getMusic();
-  RootNavigation.navigate('Home', {name: 'Home'});
+useEffect(async ()=>{
+  await getItems()
+  await getMusic().then(()=>{RootNavigation.navigate('Home', {name: 'Home'})})
+  
 }, [])
     return (
         <userContext.Provider value={{user, setUser, items, setItems, changeLogIn, musicFiles, setMusicFiles, gettingData}}>
