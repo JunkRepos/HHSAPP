@@ -1,22 +1,38 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, TouchableOpacity, Text, ScrollView, Image, useWindowDimensions} from 'react-native';
 import {Card, Avatar} from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
+import ProgressBar from 'react-native-animated-progress';
+
+
 function FolderCard({folderName, subFiles, print}) {
   const [showContent, setShowContent] = useState(false);
   const {height, width} = useWindowDimensions();
   const [openFile, setOpenFile] = useState(null);
-  console.log(subFiles, "FILES");
+  const [loading, setLoading] = useState(false);
+  const [loadPrint, setLoadPrint] = useState(false);
   return (
     <View style={{marginHorizontal: (openFile == null) ?  10 : 0, marginTop: (openFile == null) ? 17: 0, backgroundColor: (openFile != null) ? 'white' : 'transparent'}}>
     <ScrollView>
     {openFile != null ?
+    
+    
     <View>
-    <TouchableOpacity onPress={()=>{setOpenFile(null), console.log("CHANGE")}} style={{flexDirection: 'row', left: 0}}>
+    {loading ?
+    <View style={{position: 'absolute', alignSelf: 'center', justifyContent: 'center', width: "90%", height: "100%"}}>
+    <Text style={{
+      fontSize: 16,
+      fontFamily: "Avenir Next",
+      fontWeight: '500',
+    }}>Loading ...</Text>
+    <ProgressBar indeterminate="true" backgroundColor="green" height={15}/> 
+    </View>: 
+    <TouchableOpacity onPress={()=>{setOpenFile(null)}} style={{flexDirection: 'row', left: 0}}>
         <Ionicons  size={18} name='md-chevron-back-outline'/>
         <Text style={{fontWeight: "500", fontFamily: "Avenir Next", fontSize: 15}}>Back</Text>
-    </TouchableOpacity>
-    <Image source={{uri: openFile}}  style={{width: width*0.9, height: height*0.9}} />
+    </TouchableOpacity>}
+    
+    <Image onLoad={()=>{setLoading(false)}} onLoadStart={()=>{setLoading(true)}} source={{uri: openFile}}  style={{width: width*0.9, height: height*0.9}} />
     </View>
     :
     <View>
@@ -52,7 +68,7 @@ function FolderCard({folderName, subFiles, print}) {
                       paddingHorizontal: 30,
                     }}>
                     <Text>{name}</Text>
-                    <TouchableOpacity onPress={()=>{print(pdf)}}>
+                    <TouchableOpacity onPress={()=>{print(pdf, setLoadPrint)}}>
                     <Ionicons name={'print-outline'} size={20} color={'#C0C0C0'}/>
                     </TouchableOpacity>
                   </View>
