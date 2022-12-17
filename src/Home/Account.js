@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { EditSection } from '../Components/EditSection';
 import { EditInstrument } from '../Components/EditInstrument';
 import { EditPosition } from '../Components/EditPosition';
-export const Account = () => {
+export default function Account (){
     
     const {user, setUser, items, setItems, changeLogIn, musicFiles, setMusicFiles, gettingData} = userAuth();
     const [changeUsernameVisible, setChangeUsernameVisible] = useState(false);

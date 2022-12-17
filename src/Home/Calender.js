@@ -5,7 +5,7 @@ import CalenderCard from '../Components/CalenderComp/CalenderCard';
 import CreateCalenderCard from '../Components/CalenderComp/CreateCalenderCard';
 import { View, Platform, Text} from 'react-native';
 import { Popup } from '../Components/Popup';
-export const Calender = ({navigation}) => {
+export default function Calender ({navigation}) {
   const {user, setUser, items, setItems} = userAuth();
   // console.log(user);
   const loadItems = (day) => {

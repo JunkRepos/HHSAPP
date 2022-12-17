@@ -104,23 +104,9 @@ export const Popup = ({visible, setUser}) => {
         inputCount={6}
         keyboardType="numeric"
         textInputStyle={{borderRadius: 10, borderWidth: 1}}/>
-    {/* </View> */}
-    {/* <TouchableOpacity>
-      <Text>
-        CANCEL
-      </Text>
-    </TouchableOpacity>
-    <TouchableOpacity onPress={()=>{(selectedInstrument!="" && selectedPosition!="" && selectedSection!="") ? (onPress(), setVisible(false), setSelectedPosition(""), setSelectedInstrument(""), setSelectedSection("")): Alert.alert("please select all boxes")}} style={{borderRadius: 10, backgroundColor: "green", paddingHorizontal: "5%", paddingVertical: "2%"}}>
-        <Text style={{fontSize: 20, color: 'white'}}>SUBMIT</Text>
-    </TouchableOpacity> */}
-    {/* <View style={{flexDirection: 'row'}}> */}
-    {/* <TouchableOpacity onPress={()=>{setVisible(false)}} style={{marginRight: "5%", paddingHorizontal: "10%", paddingVertical: "3.5%", borderWidth: 0.5, borderColor: 'grey', borderRadius: 5}}>
-            <Text style={{fontWeight: "600", fontFamily: "Avenir Next", fontSize: 16}}>CANCEL</Text>
-        </TouchableOpacity> */}
         <TouchableOpacity  onPress={()=>{(selectedInstrument!="" && selectedPosition!="" && selectedSection!="" && input == 122333) ? (setUser({section: selectedSection.value, instrument: selectedInstrument.value, position: selectedPosition.value, id: input})): Alert.alert("please select all boxes")}} style={{backgroundColor: '#0096FF', marginLeft: "5%", paddingHorizontal: "11%", paddingVertical: "3.5%", borderRadius: 5, shadowRadius: 1, shadowColor: 'grey', shadowOpacity: 1, shadowOffset: [1,1]}}>
             <Text style={{fontWeight: "600", fontFamily: "Avenir Next", fontSize: 16, color: submitColor}}>SUBMIT</Text>
         </TouchableOpacity>
-        {/* </View> */}
     </DialogContent>
   </Dialog>
 </View>)}

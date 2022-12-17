@@ -1,12 +1,11 @@
 import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BlurView } from 'expo-blur';
-import Music from '../Home/Music';
-import {Calender} from '../Home/Calender'
-import {Account} from '../Home/Account'
 import { StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import Calender from '../Home/Calender'
+import Music from '../Home/Music'
+import Account from '../Home/Account'
 const Tab = createBottomTabNavigator();
 function MainStack (){
     // const insets = useSafeAreaInsets();
