@@ -1,4 +1,7 @@
 # HHSAPP
 Marching Band App
-npm install
-npm start
+```shell
+> npm install
+> npm start
+
+```
